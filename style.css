@@ -653,3 +653,32 @@ body::before {
 .alien-hole.up .mole-alien {
     bottom: 10px;
 }
+@media (max-width: 600px) {
+  /* Distribui o conteúdo na tela e tira o excesso de espaço no topo */
+  main, .container {
+    padding: 10px;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  /* Reduz levemente a altura dos avatares para liberar espaço vertical */
+  .character-img, img {
+    max-height: 110px;
+    width: auto;
+  }
+
+  /* Ajusta a caixa de diálogo para expandir e não criar barra de rolagem */
+  .dialog-box, .card {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 14px;
+  }
+
+  /* Deixa o texto do diálogo ligeiramente menor */
+  .dialog-box p {
+    font-size: 0.88rem;
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+}
