@@ -654,31 +654,29 @@ body::before {
     bottom: 10px;
 }
 @media (max-width: 600px) {
-  /* Distribui o conteúdo na tela e tira o excesso de espaço no topo */
-  main, .container {
-    padding: 10px;
-    gap: 12px;
-    justify-content: center;
+  /* Reduz o palco dos personagens para não empurrar a caixa para baixo */
+  .characters-stage {
+    height: 170px !important;
+    margin-bottom: 10px !important;
   }
 
-  /* Reduz levemente a altura dos avatares para liberar espaço vertical */
-  .character-img, img {
-    max-height: 110px;
-    width: auto;
+  /* Reduz a imagem do Rick e do Morty */
+  .character-container img {
+    width: 100px !important;
+    height: auto !important;
   }
 
-  /* Ajusta a caixa de diálogo para expandir e não criar barra de rolagem */
-  .dialog-box, .card {
-    height: auto;
-    max-height: none;
-    overflow: visible;
-    padding: 14px;
+  /* Remove a trava de altura e a barra de rolagem da caixa de diálogo */
+  #dialogue-box-text {
+    max-height: none !important;
+    min-height: auto !important;
+    overflow-y: visible !important;
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
   }
 
-  /* Deixa o texto do diálogo ligeiramente menor */
-  .dialog-box p {
-    font-size: 0.88rem;
-    line-height: 1.35;
-    margin-bottom: 8px;
+  /* Ajusta o espaçamento interno do terminal holográfico */
+  .hologram-terminal {
+    padding: 16px !important;
   }
 }
