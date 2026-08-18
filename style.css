@@ -654,19 +654,26 @@ body::before {
     bottom: 10px;
 }
 @media (max-width: 600px) {
-  /* Reduz o palco dos personagens para não empurrar a caixa para baixo */
+  /* Ajuste geral do espaçamento no mobile */
+  .stage-screen {
+    padding: 10px !important;
+  }
+
+  /* TELA 2: DIÁLOGOS E PERSONAGENS */
   .characters-stage {
-    height: 170px !important;
+    height: 160px !important;
     margin-bottom: 10px !important;
   }
 
-  /* Reduz a imagem do Rick e do Morty */
   .character-container img {
-    width: 100px !important;
+    width: 95px !important;
     height: auto !important;
   }
 
-  /* Remove a trava de altura e a barra de rolagem da caixa de diálogo */
+  .hologram-terminal {
+    padding: 16px !important;
+  }
+
   #dialogue-box-text {
     max-height: none !important;
     min-height: auto !important;
@@ -675,8 +682,47 @@ body::before {
     line-height: 1.4 !important;
   }
 
-  /* Ajusta o espaçamento interno do terminal holográfico */
-  .hologram-terminal {
-    padding: 16px !important;
+  /* TELA 4: CARTA E PEDIDO DE NAMORO */
+  .system-badge {
+    font-size: 8px !important;
+    top: 6px !important;
+    left: 10px !important;
+    opacity: 0.8;
+  }
+
+  .proposal-container {
+    padding-top: 20px !important;
+    width: 98% !important;
+  }
+
+  .letter-box {
+    padding: 14px 16px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .letter-title {
+    font-size: 9px !important;
+    margin-bottom: 8px !important;
+  }
+
+  #letter-text {
+    font-size: 0.80rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .proposal-buttons {
+    margin-top: 5px !important;
+    gap: 10px !important;
+    min-height: auto !important;
+  }
+
+  .btn-yes {
+    padding: 12px 20px !important;
+    font-size: 13px !important;
+  }
+
+  .btn-no {
+    padding: 12px 16px !important;
+    font-size: 12px !important;
   }
 }
