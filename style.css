@@ -1,0 +1,655 @@
+:root {
+    --bg-space: #02040A;
+    --bg-dark: #07101C;
+    --portal-green: #00FF66;
+    --holo-blue: #39D9FF;
+    --purple-dim: #7C3AED;
+    --romantic-pink: #FF3B81;
+    --text-main: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-space);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+body::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    z-index: 999;
+    background-size: 100% 4px, 6px 100%;
+    pointer-events: none;
+}
+
+.sci-fi-grid {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background-image: 
+        linear-gradient(rgba(0, 255, 102, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(57, 217, 255, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -2;
+    transform: perspective(600px) rotateX(60deg);
+    animation: gridMove 20s linear infinite;
+}
+
+.portal-backlight {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0, 255, 102, 0.15) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 70%);
+    filter: blur(80px);
+    z-index: -1;
+    animation: pulseGlow 6s ease-in-out infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 80px; }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+}
+
+.stage-screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 10;
+    padding: 20px;
+}
+
+.stage-screen.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.terminal-box-start {
+    background: rgba(7, 16, 28, 0.9);
+    border: 2px solid rgba(0, 255, 102, 0.5);
+    box-shadow: 0 0 50px rgba(0, 255, 102, 0.25), inset 0 0 20px rgba(0, 255, 102, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 550px;
+    width: 90%;
+    text-align: center;
+    backdrop-filter: blur(12px);
+}
+
+.terminal-box-start h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    color: var(--holo-blue);
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.terminal-box-start p {
+    color: #94A3B8;
+    font-size: 14px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.btn-sci-fi {
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(135deg, var(--portal-green) 0%, #059669 100%);
+    color: #02040A;
+    border: none;
+    padding: 16px 36px;
+    font-size: 15px;
+    font-weight: 900;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 25px rgba(0, 255, 102, 0.5);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.btn-sci-fi:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(0, 255, 102, 0.8);
+}
+
+.lab-environment {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.characters-stage {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 650px;
+    height: 280px;
+    align-items: flex-end;
+    margin-bottom: 25px;
+}
+
+.character-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.character-container.dimmed {
+    filter: brightness(0.35) blur(1px);
+    transform: scale(0.92);
+}
+
+.character-container.highlighted {
+    filter: brightness(1.15) drop-shadow(0 0 35px rgba(0, 255, 102, 0.7));
+    transform: scale(1.06);
+    animation: characterFloat 3s ease-in-out infinite;
+}
+
+@keyframes characterFloat {
+    0%, 100% { transform: translateY(0) scale(1.06); }
+    50% { transform: translateY(-8px) scale(1.06); }
+}
+
+.character-container img {
+    width: 160px;
+    height: auto;
+}
+
+.speaker-badge {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-top: 12px;
+    letter-spacing: 1.5px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94A3B8;
+    transition: all 0.3s ease;
+}
+
+.speaker-badge.active {
+    background: rgba(0, 255, 102, 0.2);
+    border-color: var(--portal-green);
+    color: var(--portal-green);
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+}
+
+.hologram-terminal {
+    background: rgba(7, 16, 28, 0.94);
+    border: 2px solid var(--holo-blue);
+    border-radius: 18px;
+    padding: 30px;
+    width: 100%;
+    max-width: 750px;
+    box-shadow: 0 0 50px rgba(57, 217, 255, 0.25), inset 0 0 20px rgba(57, 217, 255, 0.1);
+    backdrop-filter: blur(15px);
+    cursor: pointer;
+}
+
+.holo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    color: var(--holo-blue);
+    letter-spacing: 2px;
+}
+
+.holo-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.holo-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--romantic-pink);
+    border-radius: 50%;
+}
+.holo-dot:nth-child(2) { background: #F59E0B; }
+.holo-dot:nth-child(3) { background: var(--portal-green); }
+
+#dialogue-box-text {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #F8FAFC;
+    min-height: 95px;
+    max-height: 130px;
+    overflow-y: auto;
+}
+
+.next-prompt {
+    text-align: right;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: var(--portal-green);
+    margin-top: 15px;
+    letter-spacing: 1px;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.portal-core {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--portal-green) 0%, rgba(0,255,102,0.2) 60%, transparent 100%);
+    box-shadow: 0 0 80px var(--portal-green), inset 0 0 40px var(--portal-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    animation: portalPulse 4s ease-in-out infinite;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+@keyframes portalPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 60px var(--portal-green); }
+    50% { transform: scale(1.05); box-shadow: 0 0 100px var(--portal-green); }
+}
+
+.brenda-avatar-container {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--text-main);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    background: var(--bg-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.brenda-avatar-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.reveal-info {
+    text-align: center;
+    max-width: 500px;
+}
+
+.reveal-info h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--romantic-pink);
+    font-size: 22px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.reveal-info p {
+    color: #94A3B8;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+/* TELA 4: CARTA & PEDIDO COM A SUA ARTE DE FUNDO */
+#screen-proposal {
+    background-image: linear-gradient(rgba(2, 4, 10, 0.78), rgba(2, 4, 10, 0.92)), url('assets/img/brenda_proposta_limpa.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.proposal-container {
+    text-align: center;
+    max-width: 680px;
+    width: 92%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 20;
+}
+
+.letter-box {
+    background: rgba(7, 16, 28, 0.92);
+    border: 2px solid var(--romantic-pink);
+    border-radius: 18px;
+    padding: 25px 30px;
+    width: 100%;
+    min-height: 200px;
+    box-shadow: 0 0 40px rgba(255, 59, 129, 0.25), inset 0 0 15px rgba(255, 59, 129, 0.1);
+    margin-bottom: 25px;
+    text-align: left;
+    position: relative;
+    backdrop-filter: blur(12px);
+}
+
+.letter-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    color: var(--romantic-pink);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+#letter-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #F1F5F9;
+    white-space: pre-line;
+}
+
+.proposal-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+    min-height: 60px;
+}
+
+.btn-yes {
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(135deg, var(--portal-green) 0%, #047857 100%);
+    color: #02040A;
+    border: none;
+    padding: 16px 40px;
+    font-size: 16px;
+    font-weight: 900;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(0, 255, 102, 0.6);
+    transition: transform 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.btn-yes:hover {
+    transform: scale(1.06);
+}
+
+.btn-no {
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(135deg, #475569 100%, #334155 100%);
+    color: #CBD5E1;
+    border: none;
+    padding: 16px 28px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 14px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: transform 0.1s ease;
+    z-index: 99;
+}
+
+/* TELA 5: SUCESSO COM O TOQUE INCRÍVEL (PARTÍCULAS E PORTAL QUÂNTICO) */
+.success-card {
+    background: rgba(7, 16, 28, 0.96);
+    border: 2px solid var(--portal-green);
+    box-shadow: 0 0 90px rgba(0, 255, 102, 0.45), inset 0 0 40px rgba(0, 255, 102, 0.15);
+    border-radius: 28px;
+    padding: 45px;
+    max-width: 600px;
+    width: 90%;
+    backdrop-filter: blur(16px);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: successPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes successPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.success-portal-ring {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,255,102,0.6) 0%, rgba(124,58,237,0.3) 50%, transparent 75%);
+    filter: blur(25px);
+    z-index: -1;
+    animation: ringSpin 8s linear infinite;
+}
+
+@keyframes ringSpin {
+    0% { transform: translateX(-50%) rotate(0deg); }
+    100% { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* Partículas flutuantes incríveis no final */
+.floating-particles {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.floating-particles span {
+    position: absolute;
+    bottom: -20px;
+    font-size: 18px;
+    animation: floatUp 4s linear infinite;
+    opacity: 0.8;
+}
+
+.floating-particles span:nth-child(1) { left: 15%; animation-delay: 0s; font-size: 22px; }
+.floating-particles span:nth-child(2) { left: 35%; animation-delay: 1.2s; font-size: 16px; }
+.floating-particles span:nth-child(3) { left: 55%; animation-delay: 0.5s; font-size: 24px; }
+.floating-particles span:nth-child(4) { left: 75%; animation-delay: 2s; font-size: 18px; }
+.floating-particles span:nth-child(5) { left: 88%; animation-delay: 0.8s; font-size: 20px; }
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(0.8); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-320px) scale(1.2) rotate(360deg); opacity: 0; }
+}
+
+.success-card h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--portal-green);
+    font-size: 22px;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+}
+
+.success-badges-box {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.success-badges-box span {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    background: rgba(0, 255, 102, 0.1);
+    border: 1px solid var(--portal-green);
+    color: var(--portal-green);
+    padding: 6px 12px;
+    border-radius: 12px;
+    letter-spacing: 1px;
+}
+
+.success-card p {
+    color: #CBD5E1;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.success-highlight {
+    color: var(--holo-blue) !important;
+    font-weight: 600;
+    margin-bottom: 25px !important;
+}
+
+.signature {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    color: var(--romantic-pink);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+}
+
+.system-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: rgba(0, 255, 102, 0.6);
+    letter-spacing: 2px;
+    z-index: 100;
+    pointer-events: none;
+}
+.success-content {
+    text-align: center;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.success-title {
+    color: #00FF66;
+    font-size: 2.2rem;
+    text-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+    margin-bottom: 10px;
+}
+
+.success-subtitle {
+    color: #39D9FF;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+}
+
+.birthday-card-box {
+    background: rgba(15, 23, 42, 0.85);
+    border: 2px solid #39D9FF;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 0 20px rgba(57, 217, 255, 0.3);
+    margin-bottom: 25px;
+}
+
+.birthday-card-box h2 {
+    color: #FF3B81;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.birthday-card-box p {
+    color: #E2E8F0;
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+.portal-badge-final {
+    background: linear-gradient(135deg, #00FF66, #39D9FF);
+    color: #0B0F19;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 30px;
+    display: inline-block;
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.5);
+}
+.alien-target {
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    font-size: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s ease;
+    animation: pulseAlien 0.6s infinite alternate ease-in-out;
+}
+
+.alien-target:active {
+    transform: scale(0.7);
+}
+
+@keyframes pulseAlien {
+    0% { transform: scale(1); filter: drop-shadow(0 0 5px #00FF66); }
+    100% { transform: scale(1.1); filter: drop-shadow(0 0 15px #FF3B81); }
+}
+.alien-hole {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px dashed #39D9FF;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    cursor: crosshair;
+}
+
+.alien-hole .mole-alien {
+    position: absolute;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 45px;
+    transition: bottom 0.2s ease-in-out;
+    user-select: none;
+}
+
+.alien-hole.up .mole-alien {
+    bottom: 10px;
+}

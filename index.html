@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRANSMISSÃO C-137 // PROTOCOLO BRENDA ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="sci-fi-grid"></div>
+    <div class="portal-backlight"></div>
+    <div class="system-badge">C-137 // PROTOCOLO BRENDA // SECURE LINK</div>
+
+    <!-- Elementos de Áudio -->
+     <!-- No topo do body, junto com os outros áudios: -->
+<audio id="rick-parabens-audio" src="assets/audio/rick_parabens.mp3"></audio>
+    <audio id="bg-music" src="assets/audio/trilha_romantica.mp3" loop></audio>
+    <audio id="rick-audio" src="assets/audio/rick_fala.mp3"></audio>
+    <audio id="morty-audio" src="assets/audio/morty_fala.mp3"></audio>
+    <audio id="thinking-music" src="assets/audio/thinking_out_loud.mp3" loop></audio>
+
+    <!-- TELA 1: TRANSMISSÃO -->
+    <div id="screen-transmission" class="stage-screen active">
+        <div class="terminal-box-start">
+            <h1>TRANSMISSÃO C-137 DETECTADA</h1>
+            <p>Destinatária Identificada: <strong>Brenda ❤️</strong><br>Canal quântico seguro estabelecido por Juan. Pronto para decodificar os arquivos do multiverso?</p>
+            <button id="btn-start" class="btn-sci-fi">Estabilizar Transmissão 🛸</button>
+        </div>
+    </div>
+
+    <!-- TELA 2: DIÁLOGO RICK & MORTY -->
+    <div id="screen-dialogue" class="stage-screen">
+        <div class="lab-environment">
+            <div class="characters-stage">
+                <div id="container-rick" class="character-container highlighted">
+                    <img id="rick-img" src="assets/img/rick_fechada.png" alt="Rick">
+                    <div id="badge-rick" class="speaker-badge active">RICK SÁNCHEZ</div>
+                </div>
+                <div id="container-morty" class="character-container dimmed">
+                    <img id="morty-img" src="assets/img/morty_fechada.png" alt="Morty">
+                    <div id="badge-morty" class="speaker-badge">MORTY SMITH</div>
+                </div>
+            </div>
+
+            <div class="hologram-terminal" id="terminal-click-area">
+                <div class="holo-header">
+                    <span id="holo-channel-info">C-137 // SECURE CHANNEL // SYNC: 98%</span>
+                    <div class="holo-dots">
+                        <div class="holo-dot"></div>
+                        <div class="holo-dot"></div>
+                        <div class="holo-dot"></div>
+                    </div>
+                </div>
+                <div id="dialogue-box-text">Aguardando sincronização...</div>
+                <div id="next-dialogue-prompt" class="next-prompt">[ CLIQUE PARA CONTINUAR ]</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA 3: REVELAÇÃO DA SUA ARTE -->
+    <div id="screen-reveal" class="stage-screen">
+        <div class="portal-core" id="portal-trigger">
+            <div class="brenda-avatar-container">
+                <img id="brenda-img" src="assets/img/brenda_proposta_limpa.jpg" alt="Brenda e Juan no Multiverso">
+            </div>
+        </div>
+        <div class="reveal-info">
+            <h2>ANOMALIA DETECTADA: BRENDA</h2>
+            <p>Nível de Ameaça: 0% | Nível de Importância: Infinito.<br>Atravesse o portal dimensional para acessar a mensagem final.</p>
+            <button id="btn-enter-dimension" class="btn-sci-fi">Atravessar Portal 🌀</button>
+        </div>
+    </div>
+
+    <!-- TELA 3: REVELAÇÃO DA SUA ARTE -->
+<div id="screen-reveal" class="stage-screen">
+    <div class="portal-core" id="portal-trigger">
+        <div class="brenda-avatar-container">
+            <img id="brenda-img" src="assets/img/brenda_proposta_limpa.jpg" alt="Brenda">
+        </div>
+    </div>
+    <div class="reveal-info">
+        <h2>ANOMALIA DETECTADA: BRENDA</h2>
+        <p>Nível de Ameaça: 0% | Nível de Importância: Infinito.<br>Atravesse o portal para prosseguir.</p>
+        <button id="btn-enter-dimension" class="btn-sci-fi">Atravessar Portal</button>
+    </div>
+</div>
+
+<!-- TELA DO MINIGAME: CAÇA AOS ALIENS (ESTILO WHACK-A-MOLE) -->
+<div id="screen-minigame" class="stage-screen">
+    <div class="minigame-box" style="text-align: center; padding: 20px; width: 100%; max-width: 500px; margin: 0 auto;">
+        <h2 style="color: #00FF66; font-family: 'Orbitron', sans-serif; margin-bottom: 10px;">DEFESA DO MULTIVERSO 🛸</h2>
+        <p style="color: #ccc; margin-bottom: 15px; font-family: 'Inter', sans-serif;">Elimine 3 fugitivos do Conselho dos Ricks que estão saltando pelos portais!</p>
+        <div style="font-size: 18px; color: #39D9FF; font-family: 'Orbitron', sans-serif; font-weight: bold; margin-bottom: 15px;">
+            Aliens Eliminados: <span id="alien-score">0</span> / 3
+        </div>
+        
+        <!-- Grid de Buracos / Portais -->
+        <div id="alien-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; justify-content: center; max-width: 380px; margin: 0 auto;">
+            <div class="alien-hole" data-index="0"></div>
+            <div class="alien-hole" data-index="1"></div>
+            <div class="alien-hole" data-index="2"></div>
+            <div class="alien-hole" data-index="3"></div>
+            <div class="alien-hole" data-index="4"></div>
+            <div class="alien-hole" data-index="5"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TELA 4: CARTA & PEDIDO -->
+<div id="screen-proposal" class="stage-screen">
+    <div class="proposal-container">
+        <div class="letter-box">
+            <div class="letter-title">Mensagem Codificada de Juan para Brenda ❤️</div>
+            <div id="letter-text"></div>
+        </div>
+
+        <div id="proposal-actions" class="proposal-buttons" style="display: none;">
+            <button id="btn-yes" class="btn-yes">Sim! 🥰</button>
+            <button id="btn-no" class="btn-no">Ainda não...</button>
+        </div>
+    </div>
+</div>
+   
+   <!-- TELA DE SUCESSO / PARABÉNS -->
+<div id="screen-success" class="stage-screen">
+    <div class="success-content">
+        
+        <!-- Container do Rick para animação da fala -->
+        <div class="character-container highlighted" style="margin: 0 auto 15px auto;">
+            <img id="rick-success-img" src="assets/img/rick_fechada.png" alt="Rick" style="width: 120px; height: auto;">
+            <div class="speaker-badge active">RICK SÁNCHEZ</div>
+        </div>
+        
+        <h1 class="success-title">⚠️ TRANSMISSÃO DE EMERGÊNCIA: LEVEL 21</h1>
+        <p class="success-subtitle">O Conselho dos Ricks odeia sentimentalismo, mas...</p>
+        
+        <!-- BOLO DE ANIVERSÁRIO INTERATIVO -->
+<div id="birthday-cake" style="text-align: center; margin: 15px 0; cursor: pointer;">
+    <div id="cake-emoji" style="font-size: 55px; transition: transform 0.2s;">🎂🔥</div>
+    <p style="font-size: 11px; color: #39D9FF; font-family: 'Orbitron', sans-serif; margin-top: 5px;">(Clique no bolo para soprar as velas!)</p>
+</div>
+        <div class="birthday-card-box">
+            <h2>Parabéns pelos seus 21 anos, Brenda! 🛸</h2>
+            <p id="success-text"></p>
+        </div>
+
+        <div class="portal-badge-final">
+            <span>❤️ Oficialmente Juntos & Level 21 Desbloqueado! 🚀</span>
+        </div>
+    </div>
+</div>  
+    <script src="script.js"></script>
+</body>
+</html>
