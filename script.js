@@ -4,7 +4,8 @@ const screens = {
     reveal: document.getElementById('screen-reveal'),
     minigame: document.getElementById('screen-minigame'),
     proposal: document.getElementById('screen-proposal'),
-    success: document.getElementById('screen-success')
+    success: document.getElementById('screen-success'),
+    memories: document.getElementById('screen-memories')
 };
 
 const btnStart = document.getElementById('btn-start');
@@ -22,6 +23,7 @@ const bgMusic = document.getElementById('bg-music');
 const rickAudio = document.getElementById('rick-audio');
 const mortyAudio = document.getElementById('morty-audio');
 const thinkingMusic = document.getElementById('thinking-music');
+const openingAudio = document.getElementById('opening-audio');
 
 // Áudio, Imagem e Texto do Rick na tela de sucesso
 const rickParabensAudio = document.getElementById('rick-parabens-audio');
@@ -34,10 +36,212 @@ const letterTextView = document.getElementById('letter-text');
 const proposalActions = document.getElementById('proposal-actions');
 const btnYes = document.getElementById('btn-yes');
 const btnNo = document.getElementById('btn-no');
+const audioToggle = document.getElementById('audio-toggle');
+const btnReplay = document.getElementById('btn-replay');
+const btnMemories = document.getElementById('btn-memories');
+const btnBackSuccess = document.getElementById('btn-back-success');
+const successActions = document.getElementById('success-actions');
+const memoriesGrid = document.getElementById('memories-grid');
+const surpriseTrigger = document.getElementById('surprise-trigger');
+const surprisePanel = document.getElementById('surprise-panel');
+const surpriseText = document.getElementById('surprise-text');
+const surpriseClose = document.getElementById('surprise-close');
+const aiDentoMeme = document.getElementById('ai-dento-meme');
+const multiverseIntro = document.getElementById('multiverse-intro');
+const skipIntro = document.getElementById('skip-intro');
+
+const allAudio = [bgMusic, rickAudio, mortyAudio, thinkingMusic, rickParabensAudio, openingAudio].filter(Boolean);
+let audioMuted = false;
+let letterTimeout = null;
+let successTimeout = null;
+let memoryCardsOpened = new Set();
+let introTimeout = null;
+let warpAudioContext = null;
+
+if (aiDentoMeme) {
+    aiDentoMeme.addEventListener('error', () => aiDentoMeme.remove());
+}
+
+async function playWarpSound() {
+    try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        warpAudioContext ||= new AudioContextClass();
+        const context = warpAudioContext;
+        if (context.state === 'suspended') {
+            await context.resume();
+        }
+
+        const now = context.currentTime;
+        const master = context.createGain();
+        master.gain.setValueAtTime(0.0001, now);
+        master.gain.exponentialRampToValueAtTime(0.24, now + 0.08);
+        master.gain.exponentialRampToValueAtTime(0.0001, now + 1.15);
+        master.connect(context.destination);
+
+        const oscillator = context.createOscillator();
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(110, now);
+        oscillator.frequency.exponentialRampToValueAtTime(880, now + 0.72);
+        oscillator.frequency.exponentialRampToValueAtTime(220, now + 1.15);
+        oscillator.connect(master);
+        oscillator.start(now);
+        oscillator.stop(now + 1.2);
+    } catch (error) {
+        // O efeito visual continua normalmente se o áudio estiver indisponível.
+    }
+}
+
+function playOpeningAudio() {
+    if (!openingAudio || audioMuted) return;
+    openingAudio.currentTime = 0;
+    openingAudio.volume = 0.55;
+    openingAudio.play().catch(() => {
+        playWarpSound();
+    });
+}
+
+function leaveMultiverseIntro() {
+    if (!multiverseIntro || multiverseIntro.classList.contains('is-leaving')) return;
+    clearTimeout(introTimeout);
+    playOpeningAudio();
+    multiverseIntro.classList.add('is-leaving');
+    window.setTimeout(() => {
+        openingAudio?.pause();
+        if (openingAudio) openingAudio.currentTime = 0;
+        multiverseIntro.remove();
+    }, 950);
+}
+
+if (multiverseIntro) {
+    playOpeningAudio();
+    introTimeout = window.setTimeout(leaveMultiverseIntro, 9200);
+    skipIntro.addEventListener('click', leaveMultiverseIntro);
+}
+
+function naturalTyping(element, text, onComplete, speed = 34) {
+    let tokenIndex = 0;
+    const tokens = text.match(/\s+|[^\s]+/g) || [];
+
+    element.textContent = '';
+
+    function revealNextToken() {
+        if (tokenIndex >= tokens.length) {
+            if (onComplete) onComplete();
+            return;
+        }
+
+        const token = tokens[tokenIndex++];
+        element.textContent += token;
+        const punctuation = /[.!?…:]$/.test(token);
+        const comma = /[,;]$/.test(token);
+        const lineBreak = token.includes('\n');
+        const pause = punctuation ? speed * 8 : comma ? speed * 4 : lineBreak ? speed * 5 : speed + Math.random() * speed;
+        typingTimeout = setTimeout(revealNextToken, pause);
+    }
+
+    revealNextToken();
+}
+
+function naturalTypingWithTimer(element, text, onComplete, speed = 36) {
+    let tokenIndex = 0;
+    const tokens = text.match(/\s+|[^\s]+/g) || [];
+    element.textContent = '';
+
+    function revealNextToken() {
+        if (tokenIndex >= tokens.length) {
+            if (onComplete) onComplete();
+            return;
+        }
+        const token = tokens[tokenIndex++];
+        element.textContent += token;
+        const pause = /[.!?…:]$/.test(token) ? speed * 7 : /[,;]$/.test(token) ? speed * 3 : speed + Math.random() * speed;
+        letterTimeout = setTimeout(revealNextToken, pause);
+    }
+    revealNextToken();
+}
+
+function safePlay(audioElement) {
+    if (!audioElement || audioMuted) return;
+    audioElement.play().catch(() => {
+        audioToggle.textContent = '🔇';
+    });
+}
+
+function stopAllAudio() {
+    allAudio.forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+    });
+    Object.keys(animationIntervals).forEach(characterName => {
+        clearInterval(animationIntervals[characterName]);
+    });
+    animationIntervals = {};
+    rickImg.src = 'assets/img/rick_fechada.png';
+    mortyImg.src = 'assets/img/morty_fechada.png';
+    if (rickSuccessImg) rickSuccessImg.src = 'assets/img/rick_fechada.png';
+}
+
+function resetExperience() {
+    clearTimeout(typingTimeout);
+    clearTimeout(letterTimeout);
+    clearTimeout(successTimeout);
+    clearTimeout(alienTimer);
+    typingTimeout = null;
+    letterTimeout = null;
+    successTimeout = null;
+    gameIsActive = false;
+    lastHole = null;
+    aliensDefeated = 0;
+    candlesBlown = false;
+    memoryCardsOpened = new Set();
+    stopAllAudio();
+    dialogueBox.textContent = 'Aguardando sincronização...';
+    letterTextView.textContent = '';
+    successTextElement.textContent = '';
+    successActions.hidden = true;
+    proposalActions.style.display = 'none';
+    btnNo.style.transform = '';
+    cakeEmoji.textContent = '🎂🔥';
+    cakeEmoji.style.transform = 'scale(1)';
+    birthdayCake.querySelector('p').textContent = '(Clique no bolo para soprar as velas!)';
+    surprisePanel.hidden = true;
+    surpriseTrigger.disabled = true;
+    holes.forEach(hole => {
+        hole.classList.remove('up');
+        hole.innerHTML = '';
+    });
+    currentStep = 0;
+    switchScreen('transmission');
+}
+
+audioToggle.addEventListener('click', () => {
+    audioMuted = !audioMuted;
+    if (audioMuted) {
+        allAudio.forEach(audio => audio.pause());
+        audioToggle.textContent = '🔇';
+        audioToggle.setAttribute('aria-label', 'Ativar áudio');
+    } else {
+        audioToggle.textContent = '🔊';
+        audioToggle.setAttribute('aria-label', 'Pausar áudio');
+        const activeAudio = allAudio.find(audio => !audio.paused);
+        if (!activeAudio && multiverseIntro && !multiverseIntro.classList.contains('is-leaving')) {
+            playOpeningAudio();
+        } else if (!activeAudio && screens.dialogue.classList.contains('active')) {
+            safePlay(bgMusic);
+        }
+    }
+    audioToggle.setAttribute('aria-pressed', String(audioMuted));
+});
 
 function switchScreen(screenKey) {
-    Object.values(screens).forEach(s => s.classList.remove('active'));
-    screens[screenKey].classList.add('active');
+    Object.values(screens).forEach(s => s.classList.remove('active', 'screen-entering'));
+    if (screens[screenKey]) {
+        screens[screenKey].scrollTop = 0;
+        screens[screenKey].classList.add('active');
+        requestAnimationFrame(() => screens[screenKey].classList.add('screen-entering'));
+        window.setTimeout(() => screens[screenKey].classList.remove('screen-entering'), 700);
+    }
 }
 
 // Diálogo com as falas completas
@@ -70,7 +274,7 @@ function setupAudioSync(audioElement, imgElement, characterName) {
     }
 
     audioElement.currentTime = 0;
-    audioElement.play().catch(err => console.log("Áudio de voz falhou:", err));
+    safePlay(audioElement);
 
     let isOpen = false;
     
@@ -92,13 +296,11 @@ function setupAudioSync(audioElement, imgElement, characterName) {
 }
 
 btnStart.addEventListener('click', async () => {
+    playOpeningAudio();
+    resetExperience();
     switchScreen('dialogue');
-    try {
-        bgMusic.volume = 0.12;
-        await bgMusic.play();
-    } catch (e) {
-        console.log("Áudio de fundo restrito:", e);
-    }
+    bgMusic.volume = 0.12;
+    safePlay(bgMusic);
     playDialogueStep();
 });
 
@@ -119,23 +321,14 @@ function playDialogueStep() {
     step.badgeDim.classList.remove('active');
 
     clearTimeout(typingTimeout);
-    dialogueBox.innerHTML = "";
+    dialogueBox.textContent = "";
 
     if (step.audio) {
         setupAudioSync(step.audio, step.imgActive, step.activeName);
     }
 
-    let charIndex = 0;
     const fullText = step.text;
-    
-    function typeWriter() {
-        if (charIndex < fullText.length) {
-            dialogueBox.innerHTML += fullText.charAt(charIndex);
-            charIndex++;
-            typingTimeout = setTimeout(typeWriter, 22);
-        }
-    }
-    typeWriter();
+    naturalTyping(dialogueBox, fullText, null, 28);
 }
 
 terminalClickArea.addEventListener('click', () => {
@@ -249,7 +442,7 @@ function startHeartfeltLetter() {
     bgMusic.pause();
     try {
         thinkingMusic.volume = 0.3;
-        thinkingMusic.play();
+        safePlay(thinkingMusic);
     } catch (e) {
         console.log("Áudio romântico restrito:", e);
     }
@@ -265,19 +458,10 @@ No fim de tudo, sei que o que sinto por você é muito verdadeiro. Quero estar d
 
 Então, dito isso... quer namorar comigo? ❤️`;
 
-    let charIdx = 0;
-    letterTextView.innerHTML = "";
-
-    function typeLetter() {
-        if (charIdx < heartfeltMessage.length) {
-            letterTextView.innerHTML += heartfeltMessage.charAt(charIdx);
-            charIdx++;
-            setTimeout(typeLetter, 26);
-        } else {
-            proposalActions.style.display = 'flex';
-        }
-    }
-    typeLetter();
+    letterTextView.textContent = "";
+    naturalTypingWithTimer(letterTextView, heartfeltMessage, () => {
+        proposalActions.style.display = 'flex';
+    }, 30);
 }
 
 const moveFujaoButton = () => {
@@ -298,6 +482,58 @@ btnNo.addEventListener('click', (e) => {
 
 const successMessage = 
 `Olha, Brenda... eu não faço festinha de aniversário e odeio discursos piegas. Mas o Juan passou dias inteiros me enchendo o saco com essa historinha de 21 anos e só pra garantir que essa palhaçada romântica ficasse pronta. Então... parabéns, ou sei lá o que. Agora você tá oficialmente autorizada a tomar decisões duvidosas em qualquer linha temporal e a continuar aguentando as maluquices dele. Wubba lubba dub dub, agora fecha essa aba antes que eu exploda o servidor!`;
+
+const memories = [
+    { title: 'SINTONIA', text: 'Aquela sensação boa de encontrar alguém que entende o seu humor e a sua energia.' },
+    { title: 'PRIMEIRA TRILHA', text: 'Uma música compartilhada pode parecer simples, mas algumas ficam guardadas para sempre.' },
+    { title: 'NOSSO UNIVERSO', text: 'Entre jogos, conversas e risadas, cada momento com você virou uma dimensão favorita.' }
+];
+
+function renderMemories() {
+    memoriesGrid.innerHTML = '';
+    memories.forEach((memory, index) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'memory-card';
+        card.dataset.memoryIndex = String(index);
+        card.innerHTML = `<strong>${memory.title}</strong><span>${memory.text}</span>`;
+        card.addEventListener('click', () => {
+            memoryCardsOpened.add(index);
+            card.classList.add('opened');
+            card.setAttribute('aria-label', `${memory.title}: ${memory.text}`);
+            if (memoryCardsOpened.size === memories.length) {
+                surpriseTrigger.disabled = false;
+                surpriseTrigger.textContent = '✨ Abrir Modo Surpresa';
+            }
+        });
+        memoriesGrid.appendChild(card);
+    });
+}
+
+renderMemories();
+
+btnMemories.addEventListener('click', () => {
+    switchScreen('memories');
+    memoriesGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+btnBackSuccess.addEventListener('click', () => {
+    surprisePanel.hidden = true;
+    switchScreen('success');
+});
+
+surpriseTrigger.addEventListener('click', () => {
+    if (surpriseTrigger.disabled) return;
+    stopAllAudio();
+    surpriseText.textContent = 'Brenda, entre todas as dimensões possíveis, eu escolheria encontrar você em cada uma delas. Esta é a minha surpresa: obrigado por transformar os dias comuns nos meus favoritos. Eu te amo. ❤️';
+    surprisePanel.hidden = false;
+    surprisePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+surpriseClose.addEventListener('click', () => {
+    rickParabensAudio.pause();
+    surprisePanel.hidden = true;
+});
 
 btnYes.addEventListener('click', () => {
     // Para a música romântica ao aceitar
@@ -325,26 +561,33 @@ btnYes.addEventListener('click', () => {
 
     // 5. Faz o texto aparecer digitando aos poucos junto com a fala
     if (successTextElement) {
-        successTextElement.innerHTML = "";
-        let charIndex = 0;
+        clearTimeout(successTimeout);
+        let tokenIndex = 0;
+        const tokens = successMessage.match(/\s+|[^\s]+/g) || [];
+        successTextElement.textContent = '';
 
         function typeSuccessText() {
-            if (charIndex < successMessage.length) {
-                successTextElement.innerHTML += successMessage.charAt(charIndex);
-                charIndex++;
-                setTimeout(typeSuccessText, 25);
+            if (tokenIndex >= tokens.length) {
+                successActions.hidden = false;
+                return;
             }
+            const token = tokens[tokenIndex++];
+            successTextElement.textContent += token;
+            const pause = /[.!?…:]$/.test(token) ? 180 : /[,;]$/.test(token) ? 90 : 28 + Math.random() * 22;
+            successTimeout = setTimeout(typeSuccessText, pause);
         }
         typeSuccessText();
     }
 });
+
+btnReplay.addEventListener('click', resetExperience);
 // --- INTERATIVIDADE DO BOLO DE ANIVERSÁRIO ---
 const birthdayCake = document.getElementById('birthday-cake');
 const cakeEmoji = document.getElementById('cake-emoji');
 let candlesBlown = false;
 
 if (birthdayCake) {
-    birthdayCake.addEventListener('click', () => {
+    const blowCandles = () => {
         if (!candlesBlown) {
             candlesBlown = true;
             cakeEmoji.textContent = '🎂✨'; // Apaga a chama e coloca brilho
@@ -361,6 +604,14 @@ if (birthdayCake) {
                 origin: { y: 0.6 },
                 colors: ['#00FF66', '#FF3B81', '#39D9FF', '#F59E0B', '#FFFFFF']
             });
+        }
+    };
+
+    birthdayCake.addEventListener('click', blowCandles);
+    birthdayCake.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            blowCandles();
         }
     });
 }

@@ -20,13 +20,56 @@
     <audio id="bg-music" src="assets/audio/trilha_romantica.mp3" loop></audio>
     <audio id="rick-audio" src="assets/audio/rick_fala.mp3"></audio>
     <audio id="morty-audio" src="assets/audio/morty_fala.mp3"></audio>
-    <audio id="thinking-music" src="assets/audio/thinking_out_loud.mp3" loop></audio>
+    <audio id="thinking-music" src="assets/audio/sonhos-de-amor.mp3" loop></audio>
+    <audio id="opening-audio" src="assets/audio/abertura_xbox.mp3" preload="auto"></audio>
+
+    <div class="audio-controls" aria-label="Controles de áudio">
+        <button id="audio-toggle" class="audio-toggle" type="button" aria-label="Pausar áudio" aria-pressed="false">🔊</button>
+    </div>
+
+    <!-- Abertura visual: a nave C-137 atravessa o multiverso antes da transmissão. -->
+    <div id="multiverse-intro" class="multiverse-intro" aria-label="Entrada no multiverso da Brenda">
+        <div class="intro-art" aria-hidden="true">
+            <picture>
+                <source media="(max-width: 600px)" srcset="assets/img/multiverse-opening-mobile.png?v=3">
+                <img class="intro-art-image" src="assets/img/multiverse-planet-only.jpg" alt="Nave chegando ao planeta Brenda">
+            </picture>
+        </div>
+        <div class="intro-vignette" aria-hidden="true"></div>
+        <div class="intro-ship" aria-hidden="true">
+            <img src="assets/img/Space_Cruiser.png" alt="">
+        </div>
+        <div class="planet-entry-flash" aria-hidden="true"></div>
+        <div class="intro-copy">
+            <span class="intro-kicker">NAVE C-137 // ROTA DIMENSIONAL</span>
+            <strong>LOCALIZANDO O UNIVERSO DE BRENDA</strong>
+            <span class="intro-status">COORDENADAS BLOQUEADAS: AMOR // DESTINO: VOCÊ</span>
+        </div>
+        <div class="intro-hud" aria-hidden="true">
+            <span>PLANETA BRENDA // DESTINO LOCALIZADO</span>
+            <span>APROXIMAÇÃO ORBITAL // VELOCIDADE REDUZINDO</span>
+            <i></i>
+        </div>
+        <button id="skip-intro" class="skip-intro" type="button">Pular entrada →</button>
+    </div>
 
     <!-- TELA 1: TRANSMISSÃO -->
     <div id="screen-transmission" class="stage-screen active">
+        <div class="transmission-particles" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <aside class="transmission-data transmission-data-left" aria-hidden="true">
+            <span>SIGNAL <b>98.7%</b></span>
+            <span>COORDINATES <b>C-137</b></span>
+        </aside>
+        <aside class="transmission-data transmission-data-right" aria-hidden="true">
+            <span>SYNC <b>READY</b></span>
+            <span>CHANNEL <b>SECURE</b></span>
+        </aside>
         <div class="terminal-box-start">
             <h1>TRANSMISSÃO C-137 DETECTADA</h1>
             <p>Destinatária Identificada: <strong>Brenda ❤️</strong><br>Canal quântico seguro estabelecido por Juan. Pronto para decodificar os arquivos do multiverso?</p>
+            <div class="transmission-status">CONEXÃO COM O UNIVERSO DE BRENDA: ESTABELECIDA</div>
             <button id="btn-start" class="btn-sci-fi">Estabilizar Transmissão 🛸</button>
         </div>
     </div>
@@ -74,20 +117,6 @@
         </div>
     </div>
 
-    <!-- TELA 3: REVELAÇÃO DA SUA ARTE -->
-<div id="screen-reveal" class="stage-screen">
-    <div class="portal-core" id="portal-trigger">
-        <div class="brenda-avatar-container">
-            <img id="brenda-img" src="assets/img/brenda_proposta_limpa.jpg" alt="Brenda">
-        </div>
-    </div>
-    <div class="reveal-info">
-        <h2>ANOMALIA DETECTADA: BRENDA</h2>
-        <p>Nível de Ameaça: 0% | Nível de Importância: Infinito.<br>Atravesse o portal para prosseguir.</p>
-        <button id="btn-enter-dimension" class="btn-sci-fi">Atravessar Portal</button>
-    </div>
-</div>
-
 <!-- TELA DO MINIGAME: CAÇA AOS ALIENS (ESTILO WHACK-A-MOLE) -->
 <div id="screen-minigame" class="stage-screen">
     <div class="minigame-box" style="text-align: center; padding: 20px; width: 100%; max-width: 500px; margin: 0 auto;">
@@ -128,19 +157,13 @@
 <div id="screen-success" class="stage-screen">
     <div class="success-content">
         
-        <!-- Container do Rick para animação da fala -->
-        <div class="character-container highlighted" style="margin: 0 auto 15px auto;">
-            <img id="rick-success-img" src="assets/img/rick_fechada.png" alt="Rick" style="width: 120px; height: auto;">
-            <div class="speaker-badge active">RICK SÁNCHEZ</div>
-        </div>
-        
         <h1 class="success-title">⚠️ TRANSMISSÃO DE EMERGÊNCIA: LEVEL 21</h1>
         <p class="success-subtitle">O Conselho dos Ricks odeia sentimentalismo, mas...</p>
         
         <!-- BOLO DE ANIVERSÁRIO INTERATIVO -->
-<div id="birthday-cake" style="text-align: center; margin: 15px 0; cursor: pointer;">
-    <div id="cake-emoji" style="font-size: 55px; transition: transform 0.2s;">🎂🔥</div>
-    <p style="font-size: 11px; color: #39D9FF; font-family: 'Orbitron', sans-serif; margin-top: 5px;">(Clique no bolo para soprar as velas!)</p>
+<div id="birthday-cake" class="birthday-cake" role="button" tabindex="0" aria-label="Soprar as velas do bolo">
+    <div id="cake-emoji" class="cake-emoji">🎂🔥</div>
+    <p class="cake-hint">(Clique no bolo para soprar as velas!)</p>
 </div>
         <div class="birthday-card-box">
             <h2>Parabéns pelos seus 21 anos, Brenda! 🛸</h2>
@@ -150,8 +173,42 @@
         <div class="portal-badge-final">
             <span>❤️ Oficialmente Juntos & Level 21 Desbloqueado! 🚀</span>
         </div>
+        <div class="character-container highlighted success-character">
+            <img id="rick-success-img" src="assets/img/rick_fechada.png" alt="Rick">
+            <div class="speaker-badge active">RICK SÁNCHEZ</div>
+        </div>
+        <div id="success-actions" class="success-actions" hidden>
+            <button id="btn-memories" class="btn-sci-fi" type="button">✦ Abrir Caixa de Memórias</button>
+            <button id="btn-replay" class="btn-sci-fi secondary-action" type="button">↻ Reviver experiência</button>
+        </div>
     </div>
 </div>  
+
+<!-- TELA DE MEMÓRIAS E SURPRESA -->
+<div id="screen-memories" class="stage-screen memories-screen">
+    <div class="memories-content">
+        <div class="memories-heading">
+            <span class="memories-kicker">TRANSMISSÃO EXCLUSIVA // ACESSO CONCEDIDO</span>
+            <h1 id="memories-title">FRAGMENTOS QUE O MULTIVERSO NÃO APAGOU</h1>
+            <p class="memories-intro">Três cápsulas. Três momentos. Uma dimensão que só existe quando é você e eu.</p>
+        </div>
+        <section class="memories-panel" aria-labelledby="memories-title">
+            <div id="memories-grid" class="memories-grid"></div>
+            <button id="surprise-trigger" class="btn-sci-fi surprise-trigger" type="button" disabled>🔒 Modo Surpresa</button>
+        </section>
+        <div id="surprise-panel" class="surprise-panel" hidden aria-live="polite">
+            <img id="ai-dento-meme" class="ai-dento-meme" src="assets/img/ai-dento.png" alt="Meme Ai dento">
+            <video class="meme-video" controls playsinline preload="metadata">
+                <source src="assets/video/meme-01.mp4" type="video/mp4">
+                Seu navegador não conseguiu carregar este vídeo.
+            </video>
+            <h2>UMA ÚLTIMA TRANSMISSÃO</h2>
+            <p id="surprise-text"></p>
+            <button id="surprise-close" class="btn-sci-fi" type="button">Fechar surpresa</button>
+        </div>
+        <button id="btn-back-success" class="text-action" type="button">← Voltar para a celebração</button>
+    </div>
+</div>
     <script src="script.js"></script>
 </body>
 </html>
