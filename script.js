@@ -49,7 +49,6 @@ const surpriseClose = document.getElementById('surprise-close');
 const aiDentoMeme = document.getElementById('ai-dento-meme');
 const multiverseIntro = document.getElementById('multiverse-intro');
 const skipIntro = document.getElementById('skip-intro');
-const introArtImage = document.querySelector('.intro-art-image');
 
 const allAudio = [bgMusic, rickAudio, mortyAudio, thinkingMusic, rickParabensAudio, openingAudio].filter(Boolean);
 let audioMuted = false;
@@ -61,10 +60,6 @@ let warpAudioContext = null;
 
 // Alguns simuladores não atualizam o media query do <picture> corretamente.
 // A proporção real da janela define qual arte a abertura deve exibir.
-if (introArtImage && window.innerHeight > window.innerWidth) {
-    introArtImage.src = 'assets/img/multiverse-opening-mobile.png?v=5';
-}
-
 // Evita que o celular reutilize uma versão antiga da arte de abertura.
 if (aiDentoMeme) {
     aiDentoMeme.addEventListener('error', () => aiDentoMeme.remove());

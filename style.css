@@ -1299,29 +1299,7 @@ body::before {
   overflow: hidden;
 }
 
-.multiverse-intro {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  height: 100dvh; /* Garante que ocação de tela cheia no mobile */
-  min-height: 100vh;
-  overflow: hidden;
-}
-.intro-art-desktop,
-.intro-art-mobile {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-position: center center;
-}
 
-.intro-art-desktop {
-    object-fit: cover;
-}
-
-.intro-art-mobile {
-    display: none;
-}
 
 /* A abertura cobre a página; a transmissão só surge quando ela é removida. */
 .multiverse-intro {
@@ -1330,7 +1308,8 @@ body::before {
     z-index: 2000;
     width: 100%;
     height: 100dvh;
-    min-height: 0;
+    min-height: 100dvh;
+    overflow: hidden;
     background: #02040A;
     transition: opacity 0.45s ease, visibility 0.45s ease;
 }
@@ -1761,44 +1740,39 @@ body::before {
     }
 }
 
-/* Configuração única da abertura para telas verticais. */
 @media (max-width: 600px), (orientation: portrait) {
-    .intro-art-image {
-        object-fit: cover;
-        object-position: center 44%;
-    }
-
     #multiverse-intro {
         position: fixed;
         inset: 0;
         width: 100%;
         height: 100dvh;
         min-height: 100dvh;
-        margin: 0;
         overflow: hidden;
     }
-
     .multiverse-intro .intro-art {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    inset: 0;
-    background: #050914;
-    animation: introArtMobileArrival 9.2s cubic-bezier(0.2, 0.72, 0.2, 1) both;
-}
-
-/* Garante que a imagem do PC apareça perfeitamente no mobile */
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: #050914;
+        animation: introArtMobileArrival 9.2s cubic-bezier(0.2, 0.72, 0.2, 1) both;
+    }
+    .multiverse-intro .intro-art-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 44%;
+    }
     .multiverse-intro .intro-vignette {
         background: linear-gradient(
             to bottom,
-            rgba(1, 2, 8, 0) 0%,
-            rgba(1, 2, 8, 0.04) 52%,
-            rgba(1, 2, 8, 0.22) 72%,
-            rgba(1, 2, 8, 0.68) 100%
+            rgba(1, 2, 8, 0.05) 35%,
+            rgba(1, 2, 8, 0.2) 54%,
+            rgba(1, 2, 8, 0.92) 100%
         );
     }
-
     .multiverse-intro .intro-ship {
+        display: block;
         left: 50%;
         top: 40%;
         width: 72vw;
@@ -1806,30 +1780,50 @@ body::before {
         z-index: 3;
         animation: cruiserIntoPlanetMobile 9.2s cubic-bezier(0.18, 0.75, 0.2, 1) both;
     }
-
     .multiverse-intro .intro-copy {
         bottom: 16%;
-        width: min(100% - 24px, 420px);
-        padding: 0;
     }
-
     .multiverse-intro .intro-hud {
         left: 12px;
         bottom: 58px;
-        max-width: calc(100% - 24px);
         font-size: 7px;
     }
-
     .multiverse-intro .intro-hud i {
         width: min(42vw, 180px);
     }
+}
 
-    .multiverse-intro .skip-intro {
-        right: 12px;
-        bottom: 16px;
-        padding: 8px 10px;
-        font-size: 8px;
+@keyframes cruiserIntoPlanetMobile {
+    0%, 8% {
+        transform: translate(-120vw, -12%) scale(0.16) rotate(-8deg);
+        opacity: 0;
     }
+    24% {
+        transform: translate(-72vw, -8%) scale(0.28) rotate(-5deg);
+        opacity: 0.7;
+    }
+    48% {
+        transform: translate(-50%, -50%) scale(0.48) rotate(-1deg);
+        opacity: 1;
+    }
+    62% {
+        transform: translate(-50%, -50%) scale(0.56) rotate(0deg);
+        opacity: 1;
+    }
+    72% {
+        transform: translate(-50%, -50%) scale(0.14) rotate(0deg);
+        opacity: 0.2;
+    }
+    78%, 100% {
+        transform: translate(-50%, -50%) scale(0.03);
+        opacity: 0;
+    }
+}
+
+@keyframes introArtMobileArrival {
+    0% { transform: scale(1.01) translate3d(-0.5%, 0, 0); filter: brightness(0.6) saturate(0.85); }
+    55% { transform: scale(1) translate3d(0, 0, 0); filter: brightness(0.92) saturate(1); }
+    100% { transform: scale(1) translate3d(0, 0, 0); filter: brightness(1) saturate(1); }
 }
 
 @keyframes cruiserIntoPlanetMobile {
