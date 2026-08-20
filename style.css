@@ -1292,24 +1292,59 @@ body::before {
 }
 
 .multiverse-intro {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.multiverse-intro {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh; /* Garante que ocação de tela cheia no mobile */
+  min-height: 100vh;
+  overflow: hidden;
+}
+.intro-art-desktop,
+.intro-art-mobile {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-position: center center;
+}
+
+.intro-art-desktop {
+    object-fit: cover;
+}
+
+.intro-art-mobile {
+    display: none;
+}
+
+/* A abertura cobre a página; a transmissão só surge quando ela é removida. */
+.multiverse-intro {
     position: fixed;
     inset: 0;
     z-index: 2000;
-    overflow: hidden;
-    display: grid;
-    place-items: center;
-    background: #010208;
-    transition: opacity 0.9s ease, visibility 0.9s ease;
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    background: #02040A;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
 }
 
 .intro-art {
     position: absolute;
     inset: 0;
+    overflow: hidden;
+    z-index: 1;
     transform-origin: 56% 48%;
     animation: introArtArrival 9.2s cubic-bezier(0.2, 0.72, 0.2, 1) both;
 }
 
-.intro-art picture,
+.intro-art-picture,
 .intro-art-image {
     display: block;
     width: 100%;
@@ -1667,175 +1702,6 @@ body::before {
     to { transform: rotate(360deg); }
 }
 
-@media (max-width: 600px) {
-    .multiverse-intro {
-        min-height: 100dvh;
-    }
-
-    .warp-stars {
-        inset: -35%;
-        background-size: 55px 72px, 92px 118px;
-    }
-
-    .warp-ring {
-        width: 112vw;
-        border-width: 1px;
-    }
-
-    .warp-core {
-        width: 68vw;
-        max-width: 280px;
-    }
-
-    .warp-core img {
-        width: 82%;
-        height: 82%;
-    }
-
-    .intro-ship {
-        width: 88vw;
-        max-width: 360px;
-    }
-
-    .intro-copy {
-        bottom: 16%;
-        gap: 7px;
-        width: 100%;
-    }
-
-    .intro-kicker,
-    .intro-status {
-        font-size: 8px;
-        letter-spacing: 0.8px;
-    }
-
-    .intro-copy strong {
-        font-size: 0.95rem;
-        line-height: 1.25;
-    }
-
-    .intro-hud {
-        left: 12px;
-        bottom: 58px;
-        font-size: 7px;
-    }
-
-    .intro-hud i {
-        width: 42vw;
-    }
-
-    .skip-intro {
-        right: 12px;
-        bottom: 16px;
-        padding: 8px 10px;
-        font-size: 8px;
-    }
-}
-
-/* Direção visual da abertura: foco no planeta, leitura limpa e escala cinematográfica. */
-.multiverse-intro {
-    background: radial-gradient(circle at 50% 40%, #10152b 0%, #050914 38%, #010208 78%);
-}
-
-.multiverse-intro .warp-ring {
-    width: min(46vw, 470px);
-    border-width: 1px;
-    border-color: rgba(57, 217, 255, 0.48);
-    box-shadow: 0 0 20px rgba(57, 217, 255, 0.22), inset 0 0 20px rgba(0, 255, 102, 0.15);
-}
-
-.multiverse-intro .warp-ring-two {
-    width: min(38vw, 380px);
-    opacity: 0.65;
-}
-
-.multiverse-intro .warp-ring-three {
-    width: min(31vw, 305px);
-    opacity: 0.45;
-}
-
-.multiverse-intro .warp-core {
-    width: min(25vw, 285px);
-    box-shadow: 0 0 55px rgba(0, 255, 102, 0.38), inset 0 0 35px rgba(57, 217, 255, 0.28);
-}
-
-.multiverse-intro .intro-ship {
-    width: min(30vw, 330px);
-    filter: drop-shadow(0 0 18px rgba(57, 217, 255, 0.65));
-}
-
-.multiverse-intro .intro-copy {
-    bottom: 13%;
-    gap: 7px;
-}
-
-.multiverse-intro .intro-copy strong {
-    font-size: clamp(1rem, 2.4vw, 1.35rem);
-    letter-spacing: 0.8px;
-}
-
-.multiverse-intro .intro-kicker,
-.multiverse-intro .intro-status {
-    letter-spacing: 1.2px;
-    text-align: center;
-}
-
-.multiverse-intro .intro-hud {
-    left: 24px;
-    bottom: 22px;
-    gap: 6px;
-}
-
-.multiverse-intro .skip-intro {
-    right: 24px;
-    bottom: 22px;
-}
-
-.multiverse-intro .planet-scan {
-    bottom: -24px;
-    font-size: 8px;
-}
-
-@media (max-width: 600px) {
-    .multiverse-intro .warp-ring {
-        width: 88vw;
-    }
-
-    .multiverse-intro .warp-ring-two {
-        width: 72vw;
-    }
-
-    .multiverse-intro .warp-ring-three {
-        width: 58vw;
-    }
-
-    .multiverse-intro .warp-core {
-        width: 58vw;
-        max-width: 260px;
-    }
-
-    .multiverse-intro .intro-ship {
-        width: 74vw;
-        max-width: 300px;
-    }
-
-    .multiverse-intro .intro-copy {
-        bottom: 16%;
-        padding: 0 16px;
-    }
-
-    .multiverse-intro .intro-hud {
-        left: 12px;
-        bottom: 56px;
-        font-size: 7px;
-    }
-
-    .multiverse-intro .skip-intro {
-        right: 12px;
-        bottom: 16px;
-    }
-}
-
 .planet-entry-flash {
     position: absolute;
     z-index: 2;
@@ -1895,17 +1761,13 @@ body::before {
     }
 }
 
-@media (max-width: 600px) {
-    .multiverse-intro .intro-ship {
-        left: 50%;
-        top: 40%;
-        width: 72vw;
-        max-width: 290px;
+/* Configuração única da abertura para telas verticais. */
+@media (max-width: 600px), (orientation: portrait) {
+    .intro-art-image {
+        object-fit: cover;
+        object-position: center 44%;
     }
-}
 
-/* A arte horizontal usa a largura da tela no mobile, sem crop vertical agressivo. */
-@media (max-width: 600px) {
     #multiverse-intro {
         position: fixed;
         inset: 0;
@@ -1917,30 +1779,83 @@ body::before {
     }
 
     .multiverse-intro .intro-art {
-        background: #050914;
-        animation: introArtMobileArrival 9.2s cubic-bezier(0.2, 0.72, 0.2, 1) both;
-    }
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    background: #050914;
+    animation: introArtMobileArrival 9.2s cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
 
-    .multiverse-intro .intro-art-image {
-        object-fit: cover;
-        object-position: center 52%;
-    }
-
-    .multiverse-intro .intro-art-image {
-        object-fit: contain;
-        object-position: center center;
-    }
-
+/* Garante que a imagem do PC apareça perfeitamente no mobile */
     .multiverse-intro .intro-vignette {
-        background: linear-gradient(to bottom, rgba(1, 2, 8, 0.02) 0%, rgba(1, 2, 8, 0.08) 48%, rgba(1, 2, 8, 0.96) 72%, #010208 100%);
+        background: linear-gradient(
+            to bottom,
+            rgba(1, 2, 8, 0) 0%,
+            rgba(1, 2, 8, 0.04) 52%,
+            rgba(1, 2, 8, 0.22) 72%,
+            rgba(1, 2, 8, 0.68) 100%
+        );
     }
 
     .multiverse-intro .intro-ship {
-        display: none;
+        left: 50%;
+        top: 40%;
+        width: 72vw;
+        max-width: 290px;
+        z-index: 3;
+        animation: cruiserIntoPlanetMobile 9.2s cubic-bezier(0.18, 0.75, 0.2, 1) both;
     }
 
     .multiverse-intro .intro-copy {
         bottom: 16%;
+        width: min(100% - 24px, 420px);
+        padding: 0;
+    }
+
+    .multiverse-intro .intro-hud {
+        left: 12px;
+        bottom: 58px;
+        max-width: calc(100% - 24px);
+        font-size: 7px;
+    }
+
+    .multiverse-intro .intro-hud i {
+        width: min(42vw, 180px);
+    }
+
+    .multiverse-intro .skip-intro {
+        right: 12px;
+        bottom: 16px;
+        padding: 8px 10px;
+        font-size: 8px;
+    }
+}
+
+@keyframes cruiserIntoPlanetMobile {
+    0%, 8% {
+        transform: translate(-120vw, -12%) scale(0.16) rotate(-8deg);
+        opacity: 0;
+    }
+    24% {
+        transform: translate(-72vw, -8%) scale(0.28) rotate(-5deg);
+        opacity: 0.7;
+    }
+    48% {
+        transform: translate(-50%, -50%) scale(0.48) rotate(-1deg);
+        opacity: 1;
+    }
+    62% {
+        transform: translate(-50%, -50%) scale(0.56) rotate(0deg);
+        opacity: 1;
+    }
+    72% {
+        transform: translate(-50%, -50%) scale(0.14) rotate(0deg);
+        opacity: 0.2;
+    }
+    78%, 100% {
+        transform: translate(-50%, -50%) scale(0.03);
+        opacity: 0;
     }
 }
 
